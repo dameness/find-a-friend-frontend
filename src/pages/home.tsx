@@ -1,5 +1,4 @@
 import { ChevronDownIcon, SearchIcon } from "lucide-react";
-
 export const Home = () => (
   <div className="flex h-screen w-screen flex-col justify-between gap-y-8 overflow-auto bg-red-100 p-6 text-white">
     <img
