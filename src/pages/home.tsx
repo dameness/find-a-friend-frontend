@@ -36,7 +36,7 @@ export const Home = () => (
             <h1 className="line-clamp-1 text-ellipsis">Passo Fundo</h1>
             <ChevronDownIcon size={14} />
           </div>
-          <button className="ml-2 rounded-xl bg-yellow p-3 text-blue">
+          <button className="text-blue-200 ml-2 rounded-xl bg-yellow p-3">
             <SearchIcon size={20} />
           </button>
         </div>

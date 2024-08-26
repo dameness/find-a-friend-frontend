@@ -1,7 +1,7 @@
-import { DogsLogoCard } from "../components/DogsLogoCard";
+import { DogsLogoCard } from "../components/dogsLogoCard";
 
 export const Login = () => (
-  <div className="flex h-full flex-col gap-12 p-6 text-blue lg:flex-row">
+  <div className="text-blue-200 flex h-full flex-col gap-12 p-6 lg:flex-row">
     <div className="lg:m-auto lg:basis-1/2">
       <DogsLogoCard />
     </div>
@@ -32,11 +32,11 @@ export const Login = () => (
         </div>
 
         <div className="mb-10 flex flex-col items-center gap-y-3">
-          <button className="w-full rounded-xl bg-blue p-3 font-bold text-input-100">
+          <button className="bg-blue-200 w-full rounded-xl p-3 font-bold text-input-100">
             Login
           </button>
 
-          <button className="w-full rounded-xl bg-input-100 p-3 font-bold text-blue">
+          <button className="text-blue-200 w-full rounded-xl bg-input-100 p-3 font-bold">
             Register my organization
           </button>
         </div>
