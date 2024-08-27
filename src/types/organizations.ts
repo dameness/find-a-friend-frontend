@@ -11,3 +11,8 @@ export type Organization = {
   latitude: number;
   longitude: number;
 };
+
+export type State = {
+  state: string;
+  cities: string[];
+};
