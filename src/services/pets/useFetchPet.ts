@@ -19,6 +19,12 @@ export const useFetchPet = (id: string) => {
       queryClient
         .getQueryData<Pet[]>(["pets", JSON.stringify(petFilters)])
         ?.find((pet) => pet.id === id),
+    select: (data) => {
+      if (data)
+        return { ...data, image_url: data.image_url ?? "/no-image.jpg" };
+
+      return null;
+    },
     staleTime: 1000 * 60, // 60 seconds
   });
 

@@ -8,7 +8,7 @@ export type Pet = {
   energy: "LOW" | "MEDIUM" | "HIGH";
   independency: "LOW" | "MEDIUM" | "HIGH";
   space_needed: "LOW" | "MEDIUM" | "HIGH";
-  image_url: string | null;
+  image_url: string;
   organization_id: string;
 };
 

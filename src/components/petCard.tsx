@@ -9,7 +9,7 @@ export const PetCard = ({ pet }: PetCardProps) => (
     <div className="h-2/3 overflow-hidden rounded-xl">
       <img
         className="mx-auto h-auto w-full rounded-xl"
-        src={pet.image_url ?? "/no-image.jpg"}
+        src={pet.image_url}
         alt="Dog Image"
       />
     </div>
