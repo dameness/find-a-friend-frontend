@@ -8,6 +8,7 @@ export type Organization = {
   city: string;
   neighborhood: string;
   street: string;
+  address: string;
   latitude: number;
   longitude: number;
 };
