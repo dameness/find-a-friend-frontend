@@ -5,6 +5,7 @@ import { useFetchPets } from "@/services/pets/useFetchPets";
 import { useNavigate } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
+import { PetFilterInputs } from "@/components/petFilterInputs";
 
 export const Pets = () => {
   const { states } = useFetchStates();
@@ -87,56 +88,8 @@ export const Pets = () => {
             <ListFilterIcon />
           </button>
         </div>
-        {showFilters && (
-          <div className="mt-2 flex flex-col items-center gap-2">
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="age" className="self-start">
-                Age
-              </label>
-              <select id="age" className="w-full rounded-xl bg-red-50 p-3" />
-            </div>
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="energy" className="self-start">
-                Energy Level
-              </label>
-              <select id="energy" className="w-full rounded-xl bg-red-50 p-3" />
-            </div>
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="size" className="self-start">
-                Size
-              </label>
-              <select id="size" className="w-full rounded-xl bg-red-50 p-3" />
-            </div>
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="independency" className="self-start">
-                Independency
-              </label>
-              <select
-                id="independency"
-                className="w-full rounded-xl bg-red-50 p-3"
-              />
-            </div>
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="independency" className="self-start">
-                Independency
-              </label>
-              <select
-                id="independency"
-                className="w-full rounded-xl bg-red-50 p-3"
-              />
-            </div>
 
-            <div className="flex w-full max-w-96 flex-col items-center gap-1">
-              <label htmlFor="space_needed" className="self-start">
-                Space Needed
-              </label>
-              <select
-                id="space_needed"
-                className="w-full rounded-xl bg-red-50 p-3"
-              />
-            </div>
-          </div>
-        )}
+        {showFilters && <PetFilterInputs />}
       </div>
       <div className="px-4 py-2">
         {!pets || pets.length == 0 ? (
