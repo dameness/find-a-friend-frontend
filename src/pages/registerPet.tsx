@@ -1,9 +1,9 @@
 import { LogOutIcon } from "lucide-react";
 
 export const RegisterPet = () => (
-  <div className="flex h-full flex-col gap-6 bg-input-100 p-8">
-    <div className="bg-blue-200 m-auto flex w-full max-w-2xl justify-between gap-3 rounded-xl px-8 py-4">
-      <div className="bg-orange flex h-12 w-12 min-w-12 items-center justify-center rounded-xl">
+  <div className="flex h-full flex-col gap-6 overflow-auto bg-input-100 p-8">
+    <div className="m-auto flex w-full max-w-2xl justify-between gap-3 rounded-xl bg-blue-200 px-8 py-4">
+      <div className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-orange">
         <img className="w-5" src="/logo-icon.png" alt="Logo Icon" />
       </div>
       <div className="flex flex-col text-white">
@@ -12,12 +12,12 @@ export const RegisterPet = () => (
           Robert Robertson, 1234 NW Bobcat Lane, St. Robert, MO 65584-5678
         </p>
       </div>
-      <button className="bg-blue-100 flex h-12 w-12 min-w-12 items-center justify-center rounded-xl">
+      <button className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-blue-100">
         <LogOutIcon className="w-5 text-white" />
       </button>
     </div>
 
-    <div className="text-blue-200 m-auto flex w-full max-w-2xl flex-col gap-4 rounded-xl bg-white p-6">
+    <div className="m-auto flex w-full max-w-2xl flex-col gap-4 rounded-xl bg-white p-6 text-blue-200">
       <h1 className="text-center text-3xl font-bold">Register your pet</h1>
       <div className="flex flex-col items-center">
         <label htmlFor="name" className="self-start font-semibold">
@@ -104,7 +104,7 @@ export const RegisterPet = () => (
         />
       </div>
 
-      <button className="text-blue-200 my-10 w-full rounded-xl bg-yellow p-3 font-bold">
+      <button className="my-10 w-full rounded-xl bg-yellow p-3 font-bold text-blue-200">
         Confirm
       </button>
     </div>
