@@ -12,6 +12,7 @@ export const useFetchPets = (params: PetFilters) => {
   const { data, isLoading } = useQuery({
     queryKey: ["pets", JSON.stringify(params)],
     queryFn: () => fetchPets(params),
+    enabled: !!params.city,
     select: (data) => {
       return data.map((it) => ({
         ...it,
