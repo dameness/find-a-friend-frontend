@@ -31,14 +31,14 @@ export const Home = () => {
         <div className="-mb-10 -mt-1 ml-4 flex items-center gap-4 xs:m-0 xs:gap-2">
           <Link
             to={"/login"}
-            className="rounded-xl font-bold text-input-100 xs:bg-input-100 xs:px-4 xs:py-3 xs:text-blue-100"
+            className="rounded-xl font-bold text-input-100 xs:bg-blue-100 xs:px-4 xs:py-3"
           >
             Login
           </Link>
 
           <Link
             to={"/signup"}
-            className="rounded-xl font-bold text-input-100 xs:bg-blue-100 xs:px-4 xs:py-3"
+            className="rounded-xl font-bold text-input-100 xs:bg-yellow xs:px-4 xs:py-3 xs:text-blue-100"
           >
             Sign up
           </Link>
