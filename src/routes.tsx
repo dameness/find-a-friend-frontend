@@ -5,6 +5,7 @@ import { SignUp } from "./pages/signup";
 import { Pets } from "./pages/pets";
 import { RegisterPet } from "./pages/registerPet";
 import { Pet } from "./pages/pet";
+import { ErrorPage } from "./pages/error";
 
 export const router = createBrowserRouter([
   {
@@ -40,5 +41,6 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+    errorElement: <ErrorPage />,
   },
 ]);
