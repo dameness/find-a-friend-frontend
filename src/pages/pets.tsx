@@ -2,15 +2,20 @@ import { ListFilterIcon, SearchIcon } from "lucide-react";
 import { PetCard } from "../components/petCard";
 import { useState, ChangeEvent } from "react";
 import { useFetchPets } from "@/services/pets/useFetchPets";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { PetFilterInputs } from "@/components/petFilterInputs";
+import { decodeAndValidateToken } from "@/utils/decodeAndValidateToken";
 
 export const Pets = () => {
   const { states } = useFetchStates();
 
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("accessToken");
+
+  const { isValid: isUserAuthenticated } = decodeAndValidateToken(token);
 
   const {
     petFilters,
@@ -38,13 +43,40 @@ export const Pets = () => {
 
   return (
     <div className="h-screen w-screen overflow-auto bg-input-100">
-      <div className="flex h-20 w-full items-center justify-between bg-red-200 px-6">
+      <div className="flex h-20 w-full flex-col items-center justify-between bg-red-200 px-6 py-2 xs:flex-row">
         <img
           className="w-32 cursor-pointer"
           src="/logo.png"
           alt="Find A Friend Logo"
           onClick={() => navigate("/")}
         />
+
+        {isUserAuthenticated ? (
+          <Link
+            to={"/pets/register"}
+            className="rounded-xl font-bold text-input-100"
+          >
+            Register pet
+          </Link>
+        ) : (
+          <div className="flex items-center gap-3 text-sm xs:text-base">
+            <Link
+              to={"/login"}
+              state={{ from: "/pets" }}
+              className="rounded-xl font-bold text-input-100"
+            >
+              Login
+            </Link>
+
+            <Link
+              to={"/signup"}
+              state={{ from: "/pets" }}
+              className="rounded-xl font-bold text-input-100"
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2 bg-red-100 px-6 py-4 text-white">
         <div className="flex flex-col items-center">

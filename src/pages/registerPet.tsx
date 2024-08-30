@@ -1,4 +1,4 @@
-import { LogOutIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
 import { PetAge, PetLevel, PetSize } from "@/types/pets";
@@ -67,18 +67,21 @@ export const RegisterPet = () => {
   return (
     <div className="flex h-full flex-col gap-6 overflow-auto bg-input-100 p-8">
       <div className="m-auto flex w-full max-w-2xl justify-between gap-3 rounded-xl bg-blue-200 px-8 py-4">
-        <div className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-orange">
-          <img className="w-5" src="/logo-icon.png" alt="Logo Icon" />
-        </div>
+        <Link
+          to={"/pets"}
+          className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-blue-100"
+        >
+          <ArrowLeftIcon className="w-5 text-white" />
+        </Link>
         <div className="flex flex-col text-white">
           <h1 className="text-2xl font-bold">Your pet</h1>
           <p className="line-clamp-1 text-ellipsis text-[10px]">
             {organization?.address}
           </p>
         </div>
-        <button className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-blue-100">
-          <LogOutIcon className="w-5 text-white" />
-        </button>
+        <div className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-orange">
+          <img className="w-5" src="/logo-icon.png" alt="Logo Icon" />
+        </div>
       </div>
 
       <form

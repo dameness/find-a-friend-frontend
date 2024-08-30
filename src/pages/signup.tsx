@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { DogsLogoCard } from "../components/dogsLogoCard";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterOrganization } from "@/services/organizations/useRegisterOrganization";
+import { ArrowLeftIcon } from "lucide-react";
 
 type SignUpFormValues = {
   name: string;
@@ -17,6 +18,8 @@ type SignUpFormValues = {
 };
 
 export const SignUp = () => {
+  const location = useLocation();
+
   const { mutate } = useRegisterOrganization();
 
   const { formState, register, handleSubmit } = useForm<SignUpFormValues>({
@@ -52,7 +55,15 @@ export const SignUp = () => {
 
   return (
     <div className="flex h-full flex-col gap-12 p-6 text-blue-200">
-      <DogsLogoCard />
+      <div className="relative">
+        <DogsLogoCard />
+        <Link
+          to={location?.state?.from || "/"}
+          className="absolute -left-2 top-16 flex h-16 w-16 items-center justify-center rounded-xl bg-blue-100 text-white"
+        >
+          <ArrowLeftIcon size={40} strokeWidth={3} />
+        </Link>
+      </div>
 
       <form
         onSubmit={handleSubmit(onSubmit, onSubmitError)}

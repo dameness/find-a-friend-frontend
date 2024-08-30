@@ -1,7 +1,8 @@
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { DogsLogoCard } from "../components/dogsLogoCard";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthenticate } from "@/services/organizations/useAuthenticate";
+import { ArrowLeftIcon } from "lucide-react";
 
 type LoginFormValues = {
   email: string;
@@ -9,14 +10,15 @@ type LoginFormValues = {
 };
 
 export const Login = () => {
+  const location = useLocation();
+  const { mutate } = useAuthenticate();
+
   const { formState, register, handleSubmit } = useForm<LoginFormValues>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
-
-  const { mutate } = useAuthenticate();
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     mutate(
@@ -36,7 +38,13 @@ export const Login = () => {
 
   return (
     <div className="flex h-full flex-col gap-12 p-6 text-blue-200 lg:flex-row">
-      <div className="lg:m-auto lg:basis-1/2">
+      <div className="relative lg:m-auto lg:basis-1/2">
+        <Link
+          to={location?.state?.from || "/"}
+          className="absolute -left-2 top-16 flex h-16 w-16 items-center justify-center rounded-xl bg-blue-100 text-white"
+        >
+          <ArrowLeftIcon size={40} strokeWidth={3} />
+        </Link>
         <DogsLogoCard />
       </div>
 
