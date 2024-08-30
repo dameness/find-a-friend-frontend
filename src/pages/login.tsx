@@ -1,46 +1,119 @@
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { DogsLogoCard } from "../components/dogsLogoCard";
+import { Link } from "react-router-dom";
+import { useAuthenticate } from "@/services/organizations/useAuthenticate";
 
-export const Login = () => (
-  <div className="text-blue-200 flex h-full flex-col gap-12 p-6 lg:flex-row">
-    <div className="lg:m-auto lg:basis-1/2">
-      <DogsLogoCard />
-    </div>
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
-    <div className="lg:m-auto lg:basis-1/2">
-      <div className="m-auto flex w-full max-w-2xl flex-col gap-4">
-        <h1 className="text-4xl font-bold">Welcome!</h1>
-        <div className="flex flex-col items-center">
-          <label htmlFor="email" className="self-start font-semibold">
-            E-mail
-          </label>
-          <input
-            id="email"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
-          />
-        </div>
+export const Login = () => {
+  const { formState, register, handleSubmit } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-        <div className="flex flex-col items-center">
-          <label htmlFor="password" className="self-start font-semibold">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
-          />
-        </div>
+  const { mutate } = useAuthenticate();
 
-        <div className="mb-10 flex flex-col items-center gap-y-3">
-          <button className="bg-blue-200 w-full rounded-xl p-3 font-bold text-input-100">
-            Login
-          </button>
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    mutate(
+      { email: data.email, password: data.password },
+      {
+        onError(error) {
+          console.error(error);
+        },
+      },
+    );
+    // errors inside here should be treated!
+  };
 
-          <button className="text-blue-200 w-full rounded-xl bg-input-100 p-3 font-bold">
-            Register my organization
-          </button>
-        </div>
+  const onSubmitError: SubmitErrorHandler<LoginFormValues> = (error) => {
+    console.log(error);
+  };
+
+  return (
+    <div className="flex h-full flex-col gap-12 p-6 text-blue-200 lg:flex-row">
+      <div className="lg:m-auto lg:basis-1/2">
+        <DogsLogoCard />
+      </div>
+
+      <div className="lg:m-auto lg:basis-1/2">
+        <form
+          onSubmit={handleSubmit(onSubmit, onSubmitError)}
+          className="m-auto flex w-full max-w-2xl flex-col gap-4"
+        >
+          <h1 className="text-4xl font-bold">Welcome!</h1>
+
+          <div className="flex flex-col items-center">
+            <div className="flex w-full justify-between px-1">
+              <label htmlFor="email" className="font-semibold">
+                E-mail
+              </label>
+              <div className="text-end text-sm text-red-100">
+                {formState.errors.email?.message}
+              </div>
+            </div>
+            <input
+              id="email"
+              type="text"
+              className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+              {...register("email", {
+                pattern: {
+                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  message: "Insert a valid e-mail",
+                },
+                required: {
+                  value: true,
+                  message: "E-mail required",
+                },
+              })}
+            />
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="flex w-full justify-between px-1">
+              <label htmlFor="password" className="font-semibold">
+                Password
+              </label>
+              <div className="text-end text-sm text-red-100">
+                {formState.errors.password?.message}
+              </div>
+            </div>
+            <input
+              id="password"
+              type="password"
+              autoComplete="on"
+              className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+              {...register("password", {
+                minLength: {
+                  value: 6,
+                  message: "Password required (min. 6 digits)",
+                },
+                required: "Password required (min. 6 digits)",
+              })}
+            />
+          </div>
+
+          <div className="mb-10 flex flex-col items-center gap-y-3">
+            <button
+              type="submit"
+              className="w-full rounded-xl bg-blue-200 p-3 font-bold text-input-100"
+            >
+              Login
+            </button>
+
+            <Link
+              to={"/signup"}
+              className="w-full rounded-xl bg-input-100 p-3 text-center font-bold text-blue-200"
+            >
+              Register my organization
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
-);
+  );
+};
