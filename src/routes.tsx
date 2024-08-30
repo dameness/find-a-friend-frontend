@@ -6,6 +6,7 @@ import { Pets } from "./pages/pets";
 import { RegisterPet } from "./pages/registerPet";
 import { Pet } from "./pages/pet";
 import { ErrorPage } from "./pages/error";
+import { NotFoundPage } from "./pages/not-found";
 
 export const router = createBrowserRouter([
   {
@@ -42,5 +43,9 @@ export const router = createBrowserRouter([
       },
     ],
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
