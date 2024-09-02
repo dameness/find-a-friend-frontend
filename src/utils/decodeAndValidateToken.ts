@@ -1,41 +1,41 @@
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { api } from "@/config/api";
 
-/**
- * Decodes a token and verify if it
- * isn't expired. Returns the boolean
- * validation and, if true, returns the
- * decoded token.
- * @param token - JWT token
- */
-export const decodeAndValidateToken = (
-  token: string | null,
-): { isValid: boolean; decodedToken: JwtPayload | null } => {
+const getNewAccessToken = async () => {
+  const { data } = await api.patch<{ token: string }>("/token/refresh");
+
+  const newAccessToken = data.token;
+
+  localStorage.setItem("accessToken", newAccessToken);
+
+  return newAccessToken;
+};
+
+export const decodeAndValidateToken = async () => {
+  const token = localStorage.getItem("accessToken");
+
   if (!token) {
     return {
-      isValid: false,
+      isUserAuthenticated: false,
       decodedToken: null,
     };
   }
 
-  try {
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
+  const decoded = jwtDecode(token);
+  const currentTime = Date.now() / 1000;
 
-    if (!decoded.exp || decoded.exp <= currentTime) {
-      return {
-        isValid: false,
-        decodedToken: null,
-      };
-    }
+  if (!decoded.exp || decoded.exp <= currentTime) {
+    const newToken = await getNewAccessToken();
+    const newTokenDecoded = jwtDecode(newToken);
 
     return {
-      isValid: true,
-      decodedToken: decoded,
-    };
-  } catch {
-    return {
-      isValid: false,
-      decodedToken: null,
+      isUserAuthenticated: true,
+      decodedToken: newTokenDecoded,
     };
   }
+
+  return {
+    isUserAuthenticated: true,
+    decodedToken: decoded,
+  };
 };
