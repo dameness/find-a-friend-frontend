@@ -1,5 +1,5 @@
 import { api } from "@/config/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthenticate } from "./useAuthenticate";
 
 interface RegisterOrganizationRequest {
@@ -24,10 +24,12 @@ const registerOrganization = async (data: RegisterOrganizationRequest) => {
 
 export const useRegisterOrganization = () => {
   const { mutate: authenticate } = useAuthenticate();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: registerOrganization,
     onSuccess: (_data, variables) => {
       authenticate({ email: variables.email, password: variables.password });
+      queryClient.invalidateQueries({ queryKey: ["states"] });
     },
     onError: (error) => console.error(error),
   });

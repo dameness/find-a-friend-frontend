@@ -1,6 +1,7 @@
 import { api } from "@/config/api";
 import { PetAge, PetLevel, PetSize } from "@/types/pets";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface RegisterPetRequest {
   name: string;
@@ -38,8 +39,15 @@ const registerPet = async (data: RegisterPetRequest) => {
 };
 
 export const useRegisterPet = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: registerPet,
     onError: (error) => console.error(error),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pets"] });
+      navigate("/pets", { state: { from: "/pets/register" } });
+    },
   });
 };
