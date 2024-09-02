@@ -4,6 +4,7 @@ import { useFetchPet } from "@/services/pets/useFetchPet";
 import { PetEnergyIcons } from "@/components/petEnergyIcons";
 import { PetSizeIcons } from "@/components/petSizeIcons";
 import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
+import { ErrorPage } from "./error";
 
 export const Pet = () => {
   const { id } = useParams() as { id: string };
@@ -12,7 +13,7 @@ export const Pet = () => {
 
   const { organization } = useFetchOrganization(pet!.organization_id);
 
-  if (!id || !pet) return <></>; //errorPage with request error
+  if (!id || !pet) return <ErrorPage errorMessage="Oops! Pet not found!" />;
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-input-100 p-8">
