@@ -28,7 +28,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen flex-col justify-between gap-y-8 overflow-auto bg-red-100 p-6 text-white">
+    <div className="flex h-full w-screen flex-col justify-between gap-y-8 overflow-auto bg-red-100 p-6 text-white">
       <div className="flex w-full flex-col items-center justify-between xs:flex-row">
         <img src="/logo.png" alt="Find A Friend Logo" />
         {!isUserAuthenticated && (

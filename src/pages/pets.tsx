@@ -2,7 +2,7 @@ import { ListFilterIcon, SearchIcon } from "lucide-react";
 import { PetCard } from "../components/petCard";
 import { useState, ChangeEvent, useEffect } from "react";
 import { useFetchPets } from "@/services/pets/useFetchPets";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { PetFilterInputs } from "@/components/petFilterInputs";
@@ -14,6 +14,7 @@ export const Pets = () => {
   const { states } = useFetchStates();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { decodedToken, isUserAuthenticated } = useAuthContext();
 
@@ -46,7 +47,10 @@ export const Pets = () => {
   };
 
   useEffect(() => {
-    if (organization && !selectedCity) {
+    if (
+      organization &&
+      (!selectedCity || location?.state?.from === "/pets/register")
+    ) {
       setSelectedState(states.find((it) => it.state === organization.state));
       setSelectedCity(organization.city);
       return;
