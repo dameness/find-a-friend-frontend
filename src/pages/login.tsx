@@ -1,6 +1,6 @@
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { DogsLogoCard } from "../components/dogsLogoCard";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthenticate } from "@/services/organizations/useAuthenticate";
 import { ArrowLeftIcon } from "lucide-react";
 
@@ -11,6 +11,7 @@ type LoginFormValues = {
 
 export const Login = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { mutate } = useAuthenticate();
 
   const { formState, register, handleSubmit } = useForm<LoginFormValues>({
@@ -24,6 +25,7 @@ export const Login = () => {
     mutate(
       { email: data.email, password: data.password },
       {
+        onSuccess: () => navigate("/pets"),
         onError(error) {
           console.error(error);
         },

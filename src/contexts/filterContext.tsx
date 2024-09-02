@@ -1,6 +1,6 @@
 import { State } from "@/types/organizations";
 import { PetFilters } from "@/types/pets";
-import { ReactNode, createContext, useState } from "react";
+import { PropsWithChildren, createContext, useState } from "react";
 
 export type FilterContextType = {
   petFilters: PetFilters;
@@ -15,7 +15,7 @@ export type FilterContextType = {
 
 export const FilterContext = createContext({} as FilterContextType);
 
-export function FilterContextProvider({ children }: { children: ReactNode }) {
+export function FilterContextProvider({ children }: PropsWithChildren) {
   const [selectedState, setSelectedState] = useState<State>();
   const [selectedCity, setSelectedCity] = useState<string>();
   const [petFilters, setPetFilters] = useState<PetFilters>({ city: "" });

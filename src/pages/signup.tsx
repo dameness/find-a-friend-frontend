@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { DogsLogoCard } from "../components/dogsLogoCard";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterOrganization } from "@/services/organizations/useRegisterOrganization";
@@ -19,7 +19,7 @@ type SignUpFormValues = {
 
 export const SignUp = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const { mutate } = useRegisterOrganization();
 
   const { formState, register, handleSubmit } = useForm<SignUpFormValues>({
@@ -45,7 +45,9 @@ export const SignUp = () => {
         longitude: 0,
       };
 
-      mutate(postData);
+      mutate(postData, {
+        onSuccess: () => navigate("/pets"),
+      });
     }
   };
 
