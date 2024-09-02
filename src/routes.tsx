@@ -6,11 +6,13 @@ import { Pets } from "./pages/pets";
 import { RegisterPet } from "./pages/registerPet";
 import { Pet } from "./pages/pet";
 import { ErrorPage } from "./pages/error";
-import { NotFoundPage } from "./pages/not-found";
+import { AppWrapper } from "./components/appWrapper";
+import { ProtectedRoute } from "./components/protectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <AppWrapper />,
     children: [
       {
         index: true,
@@ -33,7 +35,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "register",
-            element: <RegisterPet />,
+            element: (
+              <ProtectedRoute>
+                <RegisterPet />
+              </ProtectedRoute>
+            ),
           },
           {
             path: ":id",
@@ -46,6 +52,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: <ErrorPage errorMessage="404 - Not Found" />,
   },
 ]);

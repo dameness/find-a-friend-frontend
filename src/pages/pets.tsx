@@ -1,21 +1,25 @@
 import { ListFilterIcon, SearchIcon } from "lucide-react";
 import { PetCard } from "../components/petCard";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useFetchPets } from "@/services/pets/useFetchPets";
 import { useNavigate, Link } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { PetFilterInputs } from "@/components/petFilterInputs";
-import { decodeAndValidateToken } from "@/utils/decodeAndValidateToken";
+import { logout } from "@/utils/logout";
+import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Pets = () => {
   const { states } = useFetchStates();
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken");
+  const { decodedToken, isUserAuthenticated } = useAuthContext();
 
-  const { isValid: isUserAuthenticated } = decodeAndValidateToken(token);
+  const organizationId = decodedToken?.sub;
+
+  const { organization } = useFetchOrganization(organizationId!);
 
   const {
     petFilters,
@@ -24,6 +28,10 @@ export const Pets = () => {
     selectedCity,
     setSelectedCity,
   } = useFilterContext();
+
+  const [showFilters, setShowFilters] = useState(false);
+
+  const { pets } = useFetchPets(petFilters);
 
   const handleSelectState = (e: ChangeEvent<HTMLSelectElement>) => {
     const state = states.find((it) => it.state === e.target.value);
@@ -37,13 +45,17 @@ export const Pets = () => {
     setSelectedCity(city);
   };
 
-  const [showFilters, setShowFilters] = useState(false);
-
-  const { pets } = useFetchPets(petFilters);
+  useEffect(() => {
+    if (organization && !selectedCity) {
+      setSelectedState(states.find((it) => it.state === organization.state));
+      setSelectedCity(organization.city);
+      return;
+    }
+  }, [organization]);
 
   return (
     <div className="h-screen w-screen overflow-auto bg-input-100">
-      <div className="flex h-20 w-full flex-col items-center justify-between bg-red-200 px-6 py-2 xs:flex-row">
+      <div className="flex h-[90px] w-full flex-col items-center justify-between bg-red-200 px-6 py-2 xs:flex-row">
         <img
           className="w-32 cursor-pointer"
           src="/logo.png"
@@ -52,12 +64,20 @@ export const Pets = () => {
         />
 
         {isUserAuthenticated ? (
-          <Link
-            to={"/pets/register"}
-            className="rounded-xl font-bold text-input-100"
-          >
-            Register pet
-          </Link>
+          <div className="flex items-center gap-3 text-sm xs:text-base">
+            <Link
+              to={"/pets/register"}
+              className="rounded-xl border p-1 font-bold text-input-100 xs:px-2 xs:py-1"
+            >
+              Register pet
+            </Link>
+            <button
+              onClick={logout}
+              className="rounded-xl p-1 font-bold text-input-100 xs:px-2 xs:py-1"
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <div className="flex items-center gap-3 text-sm xs:text-base">
             <Link

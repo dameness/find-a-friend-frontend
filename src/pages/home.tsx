@@ -1,3 +1,4 @@
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { SearchIcon } from "lucide-react";
@@ -6,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { states } = useFetchStates();
+
+  const { isUserAuthenticated } = useAuthContext();
 
   const { selectedState, setSelectedState, selectedCity, setSelectedCity } =
     useFilterContext();
@@ -28,21 +31,23 @@ export const Home = () => {
     <div className="flex h-screen w-screen flex-col justify-between gap-y-8 overflow-auto bg-red-100 p-6 text-white">
       <div className="flex w-full flex-col items-center justify-between xs:flex-row">
         <img src="/logo.png" alt="Find A Friend Logo" />
-        <div className="-mb-10 -mt-1 ml-4 flex items-center gap-4 xs:m-0 xs:gap-2">
-          <Link
-            to={"/login"}
-            className="rounded-xl font-bold text-input-100 xs:bg-blue-100 xs:px-4 xs:py-3"
-          >
-            Login
-          </Link>
+        {!isUserAuthenticated && (
+          <div className="-mb-10 -mt-1 ml-4 flex items-center gap-4 xs:m-0 xs:gap-2">
+            <Link
+              to={"/login"}
+              className="rounded-xl font-bold text-input-100 xs:bg-blue-100 xs:px-4 xs:py-3"
+            >
+              Login
+            </Link>
 
-          <Link
-            to={"/signup"}
-            className="rounded-xl font-bold text-input-100 xs:bg-yellow xs:px-4 xs:py-3 xs:text-blue-100"
-          >
-            Sign up
-          </Link>
-        </div>
+            <Link
+              to={"/signup"}
+              className="rounded-xl font-bold text-input-100 xs:bg-yellow xs:px-4 xs:py-3 xs:text-blue-100"
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col items-center justify-around gap-y-6 lg:flex-row">

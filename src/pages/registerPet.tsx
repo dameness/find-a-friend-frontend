@@ -4,7 +4,7 @@ import { useFetchOrganization } from "@/services/organizations/useFetchOrganizat
 import { PetAge, PetLevel, PetSize } from "@/types/pets";
 import { useRegisterPet } from "@/services/pets/useRegisterPet";
 import { Link } from "react-router-dom";
-import { decodeAndValidateToken } from "@/utils/decodeAndValidateToken";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 type RegisterPetFormValues = {
   name: string;
@@ -32,9 +32,7 @@ export const RegisterPet = () => {
 
   const { mutate } = useRegisterPet();
 
-  const token = localStorage.getItem("accessToken");
-
-  const { decodedToken } = decodeAndValidateToken(token);
+  const { decodedToken } = useAuthContext();
 
   const organizationId = decodedToken?.sub;
 
