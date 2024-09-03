@@ -1,6 +1,7 @@
+import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { State } from "@/types/organizations";
 import { PetFilters } from "@/types/pets";
-import { PropsWithChildren, createContext, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 export type FilterContextType = {
   petFilters: PetFilters;
@@ -16,6 +17,8 @@ export type FilterContextType = {
 export const FilterContext = createContext({} as FilterContextType);
 
 export function FilterContextProvider({ children }: PropsWithChildren) {
+  const { states, isStatesDataLoading } = useFetchStates();
+
   const [selectedState, setSelectedState] = useState<State>();
   const [selectedCity, setSelectedCity] = useState<string>();
   const [petFilters, setPetFilters] = useState<PetFilters>({ city: "" });
@@ -24,6 +27,13 @@ export function FilterContextProvider({ children }: PropsWithChildren) {
     setSelectedCity(city);
     setPetFilters((filters) => ({ ...filters, city: city ?? "" }));
   };
+
+  useEffect(() => {
+    if (states[0] && states[0].cities[0]) {
+      setSelectedState(states[0]);
+      setSelectedCity(states[0].cities[0]);
+    }
+  }, [states, isStatesDataLoading]);
 
   return (
     <FilterContext.Provider

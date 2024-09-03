@@ -76,7 +76,7 @@ export const Home = () => {
               onChange={handleSelectState}
               value={selectedState?.state}
             >
-              <option>...</option>
+              <option disabled />
               {states.map(({ state }) => (
                 <option key={state} value={state}>
                   {state}
@@ -89,7 +89,7 @@ export const Home = () => {
               onChange={handleSelectCity}
               value={selectedCity}
             >
-              <option>...</option>
+              <option disabled />
               {selectedState?.cities.map((it) => (
                 <option key={it} value={it}>
                   {it}
