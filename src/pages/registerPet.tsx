@@ -16,7 +16,7 @@ type RegisterPetFormValues = {
   energy?: PetLevel;
   independency?: PetLevel;
   space_needed?: PetLevel;
-  image_url?: string;
+  image?: any; // image sent by the user. Will be stored by React Hook Form in a FileList
 };
 
 export const RegisterPet = () => {
@@ -193,10 +193,12 @@ export const RegisterPet = () => {
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="self-start font-semibold">Images</div>
-          <div className="h-24 w-full rounded-xl bg-input-200 text-center">
-            drag and drop image
-          </div>
+          <div className="self-start font-semibold">Image</div>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/jpg"
+            {...register("image")}
+          />
         </div>
 
         <div className="flex flex-col items-center">

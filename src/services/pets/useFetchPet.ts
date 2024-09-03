@@ -21,7 +21,14 @@ export const useFetchPet = (id: string) => {
         ?.find((pet) => pet.id === id),
     select: (data) => {
       if (data)
-        return { ...data, image_url: data.image_url ?? "/no-image.jpg" };
+        return {
+          ...data,
+          image_url: data.image_url
+            ? import.meta.env.VITE_API_URL
+              ? `${import.meta.env.VITE_API_URL}${data.image_url}`
+              : `http://localhost:3333${data.image_url}`
+            : "/no-image.jpg",
+        };
 
       return null;
     },
