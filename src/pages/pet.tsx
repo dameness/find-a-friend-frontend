@@ -11,9 +11,10 @@ export const Pet = () => {
 
   const { pet } = useFetchPet(id);
 
-  const { organization } = useFetchOrganization(pet!.organization_id);
+  const { organization } = useFetchOrganization(pet?.organization_id ?? "");
 
-  if (!id || !pet) return <ErrorPage errorMessage="Oops! Pet not found!" />;
+  if (!id || !pet || !organization)
+    return <ErrorPage errorMessage="Oops! Pet not found!" />;
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-input-100 p-8">
