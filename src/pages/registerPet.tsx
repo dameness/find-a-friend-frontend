@@ -1,10 +1,11 @@
 import { ArrowLeftIcon } from "lucide-react";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
 import { PetAge, PetLevel, PetSize } from "@/types/pets";
 import { useRegisterPet } from "@/services/pets/useRegisterPet";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { toast } from "sonner";
 
 type RegisterPetFormValues = {
   name: string;
@@ -39,11 +40,15 @@ export const RegisterPet = () => {
   const { organization } = useFetchOrganization(organizationId!);
 
   const onSubmit: SubmitHandler<RegisterPetFormValues> = async (data) => {
-    mutate({ ...data, organization_id: organizationId! });
-  };
-
-  const onSubmitError: SubmitErrorHandler<RegisterPetFormValues> = (error) => {
-    console.log(error);
+    mutate(
+      { ...data, organization_id: organizationId! },
+      {
+        onError: (error) => {
+          console.error(error);
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
   if (!organization)
@@ -83,7 +88,7 @@ export const RegisterPet = () => {
       </div>
 
       <form
-        onSubmit={handleSubmit(onSubmit, onSubmitError)}
+        onSubmit={handleSubmit(onSubmit)}
         className="m-auto flex w-full max-w-2xl flex-col gap-4 rounded-xl bg-white p-6 text-blue-200"
       >
         <h1 className="text-center text-3xl font-bold">Register your pet</h1>

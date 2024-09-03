@@ -1,8 +1,10 @@
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { DogsLogoCard } from "../components/dogsLogoCard";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthenticate } from "@/services/organizations/useAuthenticate";
 import { ArrowLeftIcon } from "lucide-react";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 type LoginFormValues = {
   email: string;
@@ -26,16 +28,16 @@ export const Login = () => {
       { email: data.email, password: data.password },
       {
         onSuccess: () => navigate("/pets"),
-        onError(error) {
+        onError: (error) => {
           console.error(error);
+          toast.error(
+            error instanceof AxiosError && error.response?.status == 403
+              ? "Invalid credentials."
+              : error.message,
+          );
         },
       },
     );
-    // errors inside here should be treated!
-  };
-
-  const onSubmitError: SubmitErrorHandler<LoginFormValues> = (error) => {
-    console.log(error);
   };
 
   return (
@@ -52,7 +54,7 @@ export const Login = () => {
 
       <div className="lg:m-auto lg:basis-1/2">
         <form
-          onSubmit={handleSubmit(onSubmit, onSubmitError)}
+          onSubmit={handleSubmit(onSubmit)}
           className="m-auto flex w-full max-w-2xl flex-col gap-4"
         >
           <h1 className="text-4xl font-bold">Welcome!</h1>

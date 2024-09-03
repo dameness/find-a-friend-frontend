@@ -3,6 +3,7 @@ import { DogsLogoCard } from "../components/dogsLogoCard";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterOrganization } from "@/services/organizations/useRegisterOrganization";
 import { ArrowLeftIcon } from "lucide-react";
+import { toast } from "sonner";
 
 type SignUpFormValues = {
   name: string;
@@ -47,6 +48,10 @@ export const SignUp = () => {
 
       mutate(postData, {
         onSuccess: () => navigate("/pets"),
+        onError: (error) => {
+          console.error(error);
+          toast.error(error.message);
+        },
       });
     }
   };
