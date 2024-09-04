@@ -12,8 +12,6 @@ interface RegisterOrganizationRequest {
   city: string;
   neighborhood: string;
   street: string;
-  latitude: number;
-  longitude: number;
 }
 
 const registerOrganization = async (data: RegisterOrganizationRequest) => {
