@@ -36,24 +36,17 @@ export const SignUp = () => {
       password: "",
       confirm_password: "",
     },
+    mode: "all",
   });
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
-    if (data.password === data.confirm_password) {
-      const postData = {
-        ...data,
-        latitude: 0,
-        longitude: 0,
-      };
-
-      mutate(postData, {
-        onSuccess: () => navigate("/pets"),
-        onError: (error) => {
-          console.error(error);
-          toast.error(error.message);
-        },
-      });
-    }
+    mutate(data, {
+      onSuccess: () => navigate("/pets"),
+      onError: (error) => {
+        console.error(error);
+        toast.error(error.message);
+      },
+    });
   };
 
   const onSubmitError: SubmitErrorHandler<SignUpFormValues> = (error) => {
@@ -217,7 +210,7 @@ export const SignUp = () => {
         <div className="flex flex-col items-center">
           <div className="flex w-full justify-between px-1">
             <label htmlFor="street" className="font-semibold">
-              Street
+              Address
             </label>
             <div className="text-end text-sm text-red-100">
               {formState.errors.street?.message}
@@ -231,10 +224,6 @@ export const SignUp = () => {
               required: "Street required",
             })}
           />
-        </div>
-
-        <div className="h-24 w-full rounded-xl bg-input-200 text-center">
-          map
         </div>
 
         <div className="flex flex-col items-center">
@@ -277,6 +266,8 @@ export const SignUp = () => {
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
             {...register("confirm_password", {
               required: "Confirm your password",
+              validate: (value, formValues) =>
+                value === formValues.password || "Password does not match",
             })}
           />
         </div>
