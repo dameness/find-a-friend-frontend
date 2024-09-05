@@ -9,12 +9,21 @@ import { ErrorPage } from "./error";
 export const Pet = () => {
   const { id } = useParams() as { id: string };
 
-  const { pet } = useFetchPet(id);
+  const { pet, isFetched: isPetsDataFetched } = useFetchPet(id);
 
-  const { organization } = useFetchOrganization(pet?.organization_id ?? "");
+  const { organization, isFetched: isOrganizationDataFetched } =
+    useFetchOrganization(pet?.organization_id ?? "");
 
-  if (!id || !pet || !organization)
+  if (
+    (!id || !pet || !organization) &&
+    isPetsDataFetched &&
+    isOrganizationDataFetched
+  )
     return <ErrorPage errorMessage="Oops! Pet not found!" />;
+
+  if (!pet) {
+    return <></>;
+  }
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-input-100 p-8">
@@ -62,7 +71,7 @@ export const Pet = () => {
 
           <div className="z-50 flex h-40 w-full items-center overflow-hidden rounded-xl">
             <img
-              src={`https://maps.locationiq.com/v3/staticmap?key=pk.02ad92a04b71ce2a3eb0bd31dc68c7c9&center=${organization?.latitude},${organization?.longitude}&markers==${organization?.latitude},${organization?.longitude}&scale=1&size=500x500`}
+              src={`https://maps.locationiq.com/v3/staticmap?key=pk.02ad92a04b71ce2a3eb0bd31dc68c7c9&center=${organization?.latitude},${organization?.longitude}&markers==${organization?.latitude},${organization?.longitude}&scale=1&size=624x624`}
               alt="Map"
             />
           </div>

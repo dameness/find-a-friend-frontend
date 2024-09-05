@@ -9,11 +9,11 @@ const fetchStates = async (): Promise<State[]> => {
 };
 
 export const useFetchStates = () => {
-  const { data, isLoading } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["states"],
     queryFn: () => fetchStates(),
     staleTime: 1000 * 60, // 60 seconds
   });
 
-  return { states: data ?? [], isStatesDataLoading: isLoading };
+  return { states: data ?? [], ...rest };
 };

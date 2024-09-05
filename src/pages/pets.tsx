@@ -2,7 +2,7 @@ import { ListFilterIcon, SearchIcon } from "lucide-react";
 import { PetCard } from "../components/petCard";
 import { useState, ChangeEvent, useEffect } from "react";
 import { useFetchPets } from "@/services/pets/useFetchPets";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { PetFilterInputs } from "@/components/petFilterInputs";
@@ -14,7 +14,6 @@ export const Pets = () => {
   const { states } = useFetchStates();
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { decodedToken, isUserAuthenticated } = useAuthContext();
 
@@ -32,7 +31,7 @@ export const Pets = () => {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  const { pets } = useFetchPets(petFilters);
+  const { pets, isFetched } = useFetchPets(petFilters);
 
   const handleSelectState = (e: ChangeEvent<HTMLSelectElement>) => {
     const state = states.find((it) => it.state === e.target.value);
@@ -47,15 +46,15 @@ export const Pets = () => {
   };
 
   useEffect(() => {
-    if (
-      organization &&
-      (!selectedCity || location?.state?.from === "/pets/register")
-    ) {
+    if (organization) {
       setSelectedState(states.find((it) => it.state === organization.state));
       setSelectedCity(organization.city);
       return;
     }
-  }, [organization]);
+
+    setSelectedState(states[0]);
+    setSelectedCity(states[0]?.cities[0]);
+  }, [organization, states]);
 
   return (
     <div className="h-screen w-screen overflow-auto bg-input-100">
@@ -148,7 +147,7 @@ export const Pets = () => {
         {showFilters && <PetFilterInputs />}
       </div>
       <div className="px-4 py-2">
-        {!pets || pets.length == 0 ? (
+        {(!pets || pets.length == 0) && isFetched ? (
           <div className="flex w-full flex-col items-center justify-center gap-6">
             <h1 className="text-center text-lg font-semibold">
               No pets available! Try changing the filters and the city!

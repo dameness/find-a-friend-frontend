@@ -12,7 +12,7 @@ const fetchPet = async (id: string): Promise<Pet | null> => {
 
 export const useFetchPet = (id: string) => {
   const { petFilters } = useFilterContext();
-  const { data, isLoading } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["pet", id],
     queryFn: () => fetchPet(id),
     initialData: () =>
@@ -35,5 +35,5 @@ export const useFetchPet = (id: string) => {
     staleTime: 1000 * 60, // 60 seconds
   });
 
-  return { pet: data ?? null, isPetDataLoading: isLoading };
+  return { pet: data ?? null, ...rest };
 };

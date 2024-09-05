@@ -3,13 +3,15 @@ import { Organization } from "@/types/organizations";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchOrganization = async (id: string): Promise<Organization | null> => {
+  if (!id) return null;
+
   const response = await api.get(`/organizations/${id}`);
 
   return response.data.organization;
 };
 
 export const useFetchOrganization = (id: string) => {
-  const { data, isLoading } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["organization", id],
     queryFn: () => fetchOrganization(id),
     select: (data) => {
@@ -24,5 +26,5 @@ export const useFetchOrganization = (id: string) => {
     staleTime: 1000 * 60, // 60 seconds
   });
 
-  return { organization: data ?? null, isOrganizationDataLoading: isLoading };
+  return { organization: data ?? null, ...rest };
 };

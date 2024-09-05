@@ -17,7 +17,7 @@ export type FilterContextType = {
 export const FilterContext = createContext({} as FilterContextType);
 
 export function FilterContextProvider({ children }: PropsWithChildren) {
-  const { states, isStatesDataLoading } = useFetchStates();
+  const { states } = useFetchStates();
 
   const [selectedState, setSelectedState] = useState<State>();
   const [selectedCity, setSelectedCity] = useState<string>();
@@ -33,7 +33,7 @@ export function FilterContextProvider({ children }: PropsWithChildren) {
       setSelectedState(states[0]);
       setSelectedCity(states[0].cities[0]);
     }
-  }, [states, isStatesDataLoading]);
+  }, [states]);
 
   return (
     <FilterContext.Provider

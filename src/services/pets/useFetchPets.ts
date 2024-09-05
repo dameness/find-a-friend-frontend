@@ -9,7 +9,7 @@ const fetchPets = async (params: PetFilters): Promise<Pet[]> => {
 };
 
 export const useFetchPets = (params: PetFilters) => {
-  const { data, isLoading } = useQuery({
+  const { data, ...rest } = useQuery({
     queryKey: ["pets", JSON.stringify(params)],
     queryFn: () => fetchPets(params),
     enabled: !!params.city,
@@ -26,5 +26,5 @@ export const useFetchPets = (params: PetFilters) => {
     staleTime: 1000 * 60, // 60 seconds
   });
 
-  return { pets: data ?? [], isPetsDataLoading: isLoading };
+  return { pets: data ?? [], ...rest };
 };
