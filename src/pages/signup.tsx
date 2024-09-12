@@ -4,6 +4,9 @@ import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterOrganization } from "@/services/organizations/useRegisterOrganization";
 import { ArrowLeftIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import axios from "axios";
+import { Address } from "@/types/address";
 
 type SignUpFormValues = {
   name: string;
@@ -23,21 +26,24 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const { mutate } = useRegisterOrganization();
 
-  const { formState, register, handleSubmit } = useForm<SignUpFormValues>({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      zip_code: "",
-      state: "",
-      city: "",
-      neighborhood: "",
-      street: "",
-      password: "",
-      confirm_password: "",
-    },
-    mode: "all",
-  });
+  const [isCepFetched, setIsCepFetched] = useState(false);
+
+  const { formState, register, handleSubmit, getValues, setValue } =
+    useForm<SignUpFormValues>({
+      defaultValues: {
+        name: "",
+        email: "",
+        phone: "",
+        zip_code: "",
+        state: "",
+        city: "",
+        neighborhood: "",
+        street: "",
+        password: "",
+        confirm_password: "",
+      },
+      mode: "all",
+    });
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
     mutate(data, {
@@ -51,6 +57,28 @@ export const SignUp = () => {
 
   const onSubmitError: SubmitErrorHandler<SignUpFormValues> = (error) => {
     console.log(error);
+  };
+
+  const fetchCEP = async () => {
+    const cep = getValues("zip_code");
+    const { status, data } = await axios.get<Address>(
+      `https://brasilapi.com.br/api/cep/v2/${cep}`,
+    );
+
+    if (status !== 200) {
+      if (isCepFetched) {
+        setValue("state", "", { shouldValidate: true });
+        setValue("city", "", { shouldValidate: true });
+        setValue("neighborhood", "", { shouldValidate: true });
+        setIsCepFetched(false);
+      }
+      return;
+    }
+
+    setValue("state", data.state, { shouldValidate: true });
+    setValue("city", data.city, { shouldValidate: true });
+    setValue("neighborhood", data.neighborhood, { shouldValidate: true });
+    setIsCepFetched(true);
   };
 
   return (
@@ -146,6 +174,7 @@ export const SignUp = () => {
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
             {...register("zip_code", {
               required: "Zip code required",
+              onBlur: fetchCEP,
             })}
           />
         </div>
@@ -162,9 +191,10 @@ export const SignUp = () => {
           <input
             id="state"
             type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("state", {
               required: "State required",
+              disabled: isCepFetched,
             })}
           />
         </div>
@@ -181,9 +211,10 @@ export const SignUp = () => {
           <input
             id="city"
             type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("city", {
               required: "City required",
+              disabled: isCepFetched,
             })}
           />
         </div>
@@ -200,9 +231,10 @@ export const SignUp = () => {
           <input
             id="neighborhood"
             type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("neighborhood", {
               required: "Neighborhood required",
+              disabled: isCepFetched,
             })}
           />
         </div>
