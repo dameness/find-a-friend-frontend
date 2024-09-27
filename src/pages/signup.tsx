@@ -4,9 +4,9 @@ import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterOrganization } from "@/services/organizations/useRegisterOrganization";
 import { ArrowLeftIcon } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
 import axios from "axios";
 import { Address } from "@/types/address";
+import { maskCEP, maskPhone } from "@/utils/masks";
 
 type SignUpFormValues = {
   name: string;
@@ -26,9 +26,7 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const { mutate } = useRegisterOrganization();
 
-  const [isCepFetched, setIsCepFetched] = useState(false);
-
-  const { formState, register, handleSubmit, getValues, setValue } =
+  const { formState, register, handleSubmit, getValues, setValue, setError } =
     useForm<SignUpFormValues>({
       defaultValues: {
         name: "",
@@ -42,7 +40,7 @@ export const SignUp = () => {
         password: "",
         confirm_password: "",
       },
-      mode: "all",
+      mode: "onTouched",
     });
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
@@ -60,25 +58,24 @@ export const SignUp = () => {
   };
 
   const fetchCEP = async () => {
-    const cep = getValues("zip_code");
-    const { status, data } = await axios.get<Address>(
-      `https://brasilapi.com.br/api/cep/v2/${cep}`,
-    );
+    const CEP = getValues("zip_code");
 
-    if (status !== 200) {
-      if (isCepFetched) {
-        setValue("state", "", { shouldValidate: true });
-        setValue("city", "", { shouldValidate: true });
-        setValue("neighborhood", "", { shouldValidate: true });
-        setIsCepFetched(false);
-      }
-      return;
+    if (CEP.length !== 9) return;
+
+    try {
+      const { data } = await axios.get<Address>(
+        `https://brasilapi.com.br/api/cep/v2/${CEP}`,
+      );
+
+      setValue("state", data.state, { shouldValidate: true });
+      setValue("city", data.city, { shouldValidate: true });
+      setValue("neighborhood", data.neighborhood, { shouldValidate: true });
+    } catch {
+      setError("zip_code", { message: "Error: Zip code not found" });
+      setValue("state", "", { shouldValidate: true });
+      setValue("city", "", { shouldValidate: true });
+      setValue("neighborhood", "", { shouldValidate: true });
     }
-
-    setValue("state", data.state, { shouldValidate: true });
-    setValue("city", data.city, { shouldValidate: true });
-    setValue("neighborhood", data.neighborhood, { shouldValidate: true });
-    setIsCepFetched(true);
   };
 
   return (
@@ -151,10 +148,16 @@ export const SignUp = () => {
           </div>
           <input
             id="phone"
-            type="number"
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
             {...register("phone", {
               required: "Phone required",
+              pattern: {
+                value: /^\(\d{2}\) \d{5}-\d{4}$/,
+                message: "Should be in (XX) 99999-9999 format",
+              },
+              onChange: (e) => {
+                setValue("phone", maskPhone(e.target.value));
+              },
             })}
           />
         </div>
@@ -162,7 +165,7 @@ export const SignUp = () => {
         <div className="flex flex-col items-center">
           <div className="flex w-full justify-between px-1">
             <label htmlFor="zip-code" className="font-semibold">
-              Zip Code
+              Zip Code (CEP)
             </label>
             <div className="text-end text-sm text-red-100">
               {formState.errors.zip_code?.message}
@@ -170,11 +173,15 @@ export const SignUp = () => {
           </div>
           <input
             id="zip-code"
-            type="number"
+            maxLength={9}
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
             {...register("zip_code", {
               required: "Zip code required",
+              minLength: { value: 9, message: "Zip code should have 8 digits" },
               onBlur: fetchCEP,
+              onChange: (e) => {
+                setValue("zip_code", maskCEP(e.target.value));
+              },
             })}
           />
         </div>
@@ -194,7 +201,6 @@ export const SignUp = () => {
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("state", {
               required: "State required",
-              disabled: isCepFetched,
             })}
           />
         </div>
@@ -214,7 +220,6 @@ export const SignUp = () => {
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("city", {
               required: "City required",
-              disabled: isCepFetched,
             })}
           />
         </div>
@@ -234,7 +239,6 @@ export const SignUp = () => {
             className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
             {...register("neighborhood", {
               required: "Neighborhood required",
-              disabled: isCepFetched,
             })}
           />
         </div>
