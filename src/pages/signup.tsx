@@ -70,7 +70,11 @@ export const SignUp = () => {
       setValue("state", data.state, { shouldValidate: true });
       setValue("city", data.city, { shouldValidate: true });
       setValue("neighborhood", data.neighborhood, { shouldValidate: true });
-    } catch {
+    } catch (error) {
+      toast.error("Zip code not found!");
+
+      console.error(error);
+
       setError("zip_code", { message: "Error: Zip code not found" });
       setValue("state", "", { shouldValidate: true });
       setValue("city", "", { shouldValidate: true });
