@@ -69,21 +69,23 @@ export const Pet = () => {
             </div>
           </div>
 
-          <div className="z-50 flex h-40 w-full items-center overflow-hidden rounded-xl">
+          <a
+            href={`https://google.com/maps/place/${organization?.latitude},${organization?.longitude}`}
+            target="_blank"
+            className="z-50 flex h-40 w-full items-center overflow-hidden rounded-xl"
+          >
             <img
               src={`https://maps.locationiq.com/v3/staticmap?key=pk.02ad92a04b71ce2a3eb0bd31dc68c7c9&center=${organization?.latitude},${organization?.longitude}&markers==${organization?.latitude},${organization?.longitude}&scale=1&size=624x624`}
               alt="Map"
             />
-          </div>
-          <div className="bg-blue z-20 -mt-9 flex h-16 items-center justify-center rounded-b-xl bg-blue-200">
-            <a
-              href={`https://google.com/maps/place/${organization?.latitude},${organization?.longitude}`}
-              target="_blank"
-              className="mt-4 font-bold text-yellow"
-            >
-              See on Google Maps
-            </a>
-          </div>
+          </a>
+          <a
+            href={`https://google.com/maps/place/${organization?.latitude},${organization?.longitude}`}
+            target="_blank"
+            className="bg-blue z-20 -mt-9 flex h-16 items-center justify-center rounded-b-xl bg-blue-200 font-bold text-yellow [&>*]:mt-4"
+          >
+            <h1>See on Google Maps</h1>
+          </a>
 
           <div className="m-auto flex w-full max-w-2xl gap-3 rounded-xl bg-blue-200 px-8 py-4">
             <div className="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-orange">
