@@ -16,11 +16,7 @@ export const useFetchPets = (params: PetFilters) => {
     select: (data) => {
       return data.map((it) => ({
         ...it,
-        image_url: it.image_url
-          ? import.meta.env.VITE_API_URL
-            ? `${import.meta.env.VITE_API_URL}${it.image_url}`
-            : `http://localhost:3333${it.image_url}`
-          : "/no-image.jpg",
+        image_url: it.image_url ?? "/no-image.jpg",
       }));
     },
     staleTime: 1000 * 60, // 60 seconds

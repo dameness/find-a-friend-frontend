@@ -6,6 +6,7 @@ import { useRegisterPet } from "@/services/pets/useRegisterPet";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { toast } from "sonner";
+import axios from "axios";
 
 type RegisterPetFormValues = {
   name: string;
@@ -40,8 +41,28 @@ export const RegisterPet = () => {
   const { organization } = useFetchOrganization(organizationId!);
 
   const onSubmit: SubmitHandler<RegisterPetFormValues> = async (data) => {
+    const form = new FormData();
+    form.append("image", data.image[0]);
+
+    const uploadResponse = await axios.post(
+      "https://api.imgbb.com/1/upload?key=e8ff8d1baf1a86b0337d48d718d30eef",
+      form,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    const newData = {
+      ...data,
+      image_url: uploadResponse.data.data.url,
+    };
+
+    console.log(newData);
+
     mutate(
-      { ...data, organization_id: organizationId! },
+      { ...newData, organization_id: organizationId! },
       {
         onError: (error) => {
           console.error(error);
@@ -197,7 +218,9 @@ export const RegisterPet = () => {
           <input
             type="file"
             accept="image/png,image/jpeg,image/jpg"
-            {...register("image")}
+            {...register("image", {
+              onChange: (e) => console.log(e.target.files),
+            })}
           />
         </div>
 

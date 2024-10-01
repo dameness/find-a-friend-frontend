@@ -19,12 +19,12 @@ interface RegisterPetRequest {
 const registerPet = async (data: RegisterPetRequest) => {
   const token = localStorage.getItem("accessToken");
 
-  const uploadResponse = await api.post("/upload", data.image, {
+  const response = await api.post("/pets", data, {
     headers: { Authorization: `Bearer ${token}` },
-    validateStatus: (status) => status === 200 || status === 401,
+    validateStatus: (status) => status === 201 || status === 401,
   });
 
-  if (uploadResponse.status === 401) {
+  if (response.status === 401) {
     const {
       data: { token: newAccessToken },
     } = await api.patch<{ token: string }>("/token/refresh");
@@ -35,29 +35,8 @@ const registerPet = async (data: RegisterPetRequest) => {
 
     localStorage.setItem("accessToken", newAccessToken);
 
-    const newUploadResponse = await api.post(
-      "/upload",
-      data.image,
-      configWithRefreshedToken,
-    );
-
-    const newData = {
-      ...data,
-      image_url: newUploadResponse.data.filePath,
-    };
-
-    await api.post("/pets", newData, configWithRefreshedToken);
-    return;
+    await api.post("/pets", data, configWithRefreshedToken);
   }
-
-  const newData = {
-    ...data,
-    image_url: uploadResponse.data.filePath,
-  };
-
-  await api.post("/pets", newData, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
 };
 
 export const useRegisterPet = () => {
