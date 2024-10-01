@@ -70,6 +70,7 @@ export const SignUp = () => {
       setValue("state", data.state, { shouldValidate: true });
       setValue("city", data.city, { shouldValidate: true });
       setValue("neighborhood", data.neighborhood, { shouldValidate: true });
+      setValue("street", data.street, { shouldValidate: true });
     } catch (error) {
       toast.error("Zip code not found!");
 
@@ -79,6 +80,7 @@ export const SignUp = () => {
       setValue("state", "", { shouldValidate: true });
       setValue("city", "", { shouldValidate: true });
       setValue("neighborhood", "", { shouldValidate: true });
+      setValue("street", "", { shouldValidate: true });
     }
   };
 
@@ -182,9 +184,9 @@ export const SignUp = () => {
             {...register("zip_code", {
               required: "Zip code required",
               minLength: { value: 9, message: "Zip code should have 8 digits" },
-              onBlur: fetchCEP,
               onChange: (e) => {
                 setValue("zip_code", maskCEP(e.target.value));
+                fetchCEP();
               },
             })}
           />
