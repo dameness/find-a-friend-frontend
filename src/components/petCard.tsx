@@ -1,15 +1,14 @@
-import { Pet } from "@/types/pets";
-
 interface PetCardProps {
-  pet: Pet;
+  imageUrl: string;
+  name: string;
 }
 
-export const PetCard = ({ pet }: PetCardProps) => (
+export const PetCard = ({ imageUrl, name }: PetCardProps) => (
   <div className="relative m-auto h-52 w-64 rounded-xl bg-white p-1">
     <div className="h-2/3 overflow-hidden rounded-xl">
       <img
         className="mx-auto h-auto w-full rounded-xl"
-        src={pet.image_url}
+        src={imageUrl}
         alt="Dog Image"
       />
     </div>
@@ -19,7 +18,7 @@ export const PetCard = ({ pet }: PetCardProps) => (
     </div>
 
     <div className="flex h-1/3 items-center justify-center">
-      <h1 className="font-bold text-blue-200">{pet.name}</h1>
+      <h1 className="font-bold text-blue-200">{name}</h1>
     </div>
   </div>
 );

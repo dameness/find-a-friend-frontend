@@ -170,7 +170,7 @@ export const Pets = () => {
                   className="w-min"
                   onClick={() => navigate(`/pets/${pet.id}`)}
                 >
-                  <PetCard pet={pet} />
+                  <PetCard imageUrl={pet.image_url} name={pet.name} />
                 </a>
               ))}
             </div>
