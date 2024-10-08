@@ -1,27 +1,14 @@
 import { ArrowLeftIcon } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
-import { PetAge, PetLevel, PetSize } from "@/types/pets";
+import { RegisterPetFormValues } from "@/types/pets";
 import { useRegisterPet } from "@/services/pets/useRegisterPet";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { toast } from "sonner";
-import axios from "axios";
 import { Select } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { TextArea } from "@/components/ui/textarea";
-
-type RegisterPetFormValues = {
-  name: string;
-  description?: string;
-  requirements?: string;
-  age?: PetAge;
-  size?: PetSize;
-  energy?: PetLevel;
-  independency?: PetLevel;
-  space_needed?: PetLevel;
-  image?: any; // image sent by the user. Will be stored by React Hook Form in a FileList
-};
 
 export const RegisterPet = () => {
   const { formState, register, handleSubmit } = useForm<RegisterPetFormValues>({
@@ -44,28 +31,8 @@ export const RegisterPet = () => {
   const { organization } = useFetchOrganization(organizationId!);
 
   const onSubmit: SubmitHandler<RegisterPetFormValues> = async (data) => {
-    const form = new FormData();
-    form.append("image", data.image[0]);
-
-    const uploadResponse = await axios.post(
-      "https://api.imgbb.com/1/upload?key=e8ff8d1baf1a86b0337d48d718d30eef",
-      form,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    );
-
-    const newData = {
-      ...data,
-      image_url: uploadResponse.data.data.url,
-    };
-
-    console.log(newData);
-
     mutate(
-      { ...newData, organization_id: organizationId! },
+      { ...data, organization_id: organizationId! },
       {
         onError: (error) => {
           console.error(error);
