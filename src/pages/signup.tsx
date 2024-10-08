@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Address } from "@/types/address";
 import { maskCEP, maskPhone } from "@/utils/masks";
+import { Input } from "@/components/ui/input";
 
 type SignUpFormValues = {
   name: string;
@@ -110,10 +111,9 @@ export const SignUp = () => {
               {formState.errors.name?.message}
             </div>
           </div>
-          <input
+          <Input
             id="name"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.name}
             {...register("name", {
               required: "Name required",
             })}
@@ -129,10 +129,9 @@ export const SignUp = () => {
               {formState.errors.email?.message}
             </div>
           </div>
-          <input
+          <Input
             id="email"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.email}
             {...register("email", {
               pattern: {
                 value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -152,9 +151,9 @@ export const SignUp = () => {
               {formState.errors.phone?.message}
             </div>
           </div>
-          <input
+          <Input
             id="phone"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.phone}
             {...register("phone", {
               required: "Phone required",
               pattern: {
@@ -177,10 +176,10 @@ export const SignUp = () => {
               {formState.errors.zip_code?.message}
             </div>
           </div>
-          <input
+          <Input
             id="zip-code"
+            error={formState.errors.zip_code}
             maxLength={9}
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
             {...register("zip_code", {
               required: "Zip code required",
               minLength: { value: 9, message: "Zip code should have 8 digits" },
@@ -201,10 +200,9 @@ export const SignUp = () => {
               {formState.errors.state?.message}
             </div>
           </div>
-          <input
+          <Input
             id="state"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+            error={formState.errors.state}
             {...register("state", {
               required: "State required",
             })}
@@ -220,10 +218,9 @@ export const SignUp = () => {
               {formState.errors.city?.message}
             </div>
           </div>
-          <input
+          <Input
             id="city"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+            error={formState.errors.city}
             {...register("city", {
               required: "City required",
             })}
@@ -239,10 +236,9 @@ export const SignUp = () => {
               {formState.errors.neighborhood?.message}
             </div>
           </div>
-          <input
+          <Input
             id="neighborhood"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+            error={formState.errors.neighborhood}
             {...register("neighborhood", {
               required: "Neighborhood required",
             })}
@@ -258,10 +254,9 @@ export const SignUp = () => {
               {formState.errors.street?.message}
             </div>
           </div>
-          <input
+          <Input
             id="street"
-            type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.street}
             {...register("street", {
               required: "Street required",
             })}
@@ -277,11 +272,11 @@ export const SignUp = () => {
               {formState.errors.password?.message}
             </div>
           </div>
-          <input
+          <Input
             id="password"
             type="password"
             autoComplete="on"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.password}
             {...register("password", {
               minLength: {
                 value: 6,
@@ -301,11 +296,11 @@ export const SignUp = () => {
               {formState.errors.confirm_password?.message}
             </div>
           </div>
-          <input
+          <Input
             id="confirm-password"
             type="password"
             autoComplete="on"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            error={formState.errors.confirm_password}
             {...register("confirm_password", {
               required: "Confirm your password",
               validate: (value, formValues) =>

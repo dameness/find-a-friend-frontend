@@ -5,6 +5,7 @@ import { useAuthenticate } from "@/services/organizations/useAuthenticate";
 import { ArrowLeftIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { Input } from "@/components/ui/input";
 
 type LoginFormValues = {
   email: string;
@@ -68,10 +69,9 @@ export const Login = () => {
                 {formState.errors.email?.message}
               </div>
             </div>
-            <input
+            <Input
               id="email"
-              type="text"
-              className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+              error={formState.errors.email}
               {...register("email", {
                 pattern: {
                   value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -94,11 +94,11 @@ export const Login = () => {
                 {formState.errors.password?.message}
               </div>
             </div>
-            <input
+            <Input
               id="password"
               type="password"
               autoComplete="on"
-              className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+              error={formState.errors.password}
               {...register("password", {
                 minLength: {
                   value: 6,

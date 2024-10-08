@@ -8,6 +8,8 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { toast } from "sonner";
 import axios from "axios";
 import { Select } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { TextArea } from "@/components/ui/textarea";
 
 type RegisterPetFormValues = {
   name: string;
@@ -123,10 +125,9 @@ export const RegisterPet = () => {
               {formState.errors.name?.message}
             </div>
           </div>
-          <input
+          <Input
             id="name"
-            type="text"
-            className="w-full border border-input-200 bg-input-100"
+            error={formState.errors.name}
             {...register("name", { required: "Name required" })}
           />
         </div>
@@ -135,11 +136,7 @@ export const RegisterPet = () => {
           <label htmlFor="description" className="self-start font-semibold">
             About
           </label>
-          <textarea
-            id="description"
-            className="w-full resize-none border border-input-200 bg-input-100"
-            {...register("description")}
-          />
+          <TextArea id="description" rows={3} {...register("description")} />
         </div>
 
         <div className="flex w-full flex-col items-center gap-1">
@@ -229,10 +226,9 @@ export const RegisterPet = () => {
           <label htmlFor="requirements" className="self-start font-semibold">
             Requirements
           </label>
-          <input
+          <Input
             id="requirements"
-            type="text"
-            className="w-full border border-input-200 bg-input-100"
+            error={formState.errors.requirements}
             {...register("requirements")}
           />
         </div>
