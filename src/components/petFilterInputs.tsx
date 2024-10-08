@@ -1,5 +1,6 @@
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { PetAge, PetLevel, PetSize } from "@/types/pets";
+import { Select } from "./ui/select";
 
 export const PetFilterInputs = () => {
   const { petFilters, setPetFilters } = useFilterContext();
@@ -16,7 +17,8 @@ export const PetFilterInputs = () => {
         <label htmlFor="age" className="self-start">
           Age
         </label>
-        <select
+        <Select
+          className="bg-red-50"
           value={petFilters.age ?? ""}
           onChange={(e) =>
             setPetFilters((filters) => ({
@@ -26,19 +28,19 @@ export const PetFilterInputs = () => {
             }))
           }
           id="age"
-          className="w-full rounded-xl bg-red-50 p-3"
         >
           <option value={""}>Select...</option>
           <option value={"PUPPY"}>Puppy</option>
           <option value={"ADULT"}>Adult</option>
           <option value={"SENIOR"}>Senior</option>
-        </select>
+        </Select>
       </div>
       <div className="flex w-full max-w-96 flex-col items-center gap-1">
         <label htmlFor="energy" className="self-start">
           Energy Level
         </label>
-        <select
+        <Select
+          className="bg-red-50"
           value={petFilters.energy ?? ""}
           onChange={(e) =>
             setPetFilters((filters) => ({
@@ -50,19 +52,19 @@ export const PetFilterInputs = () => {
             }))
           }
           id="energy"
-          className="w-full rounded-xl bg-red-50 p-3"
         >
           <option value={""}>Select...</option>
           <option value={"LOW"}>Low</option>
           <option value={"MEDIUM"}>Medium</option>
           <option value={"HIGH"}>High</option>
-        </select>
+        </Select>
       </div>
       <div className="flex w-full max-w-96 flex-col items-center gap-1">
         <label htmlFor="size" className="self-start">
           Size
         </label>
-        <select
+        <Select
+          className="bg-red-50"
           value={petFilters.size ?? ""}
           onChange={(e) =>
             setPetFilters((filters) => ({
@@ -72,19 +74,19 @@ export const PetFilterInputs = () => {
             }))
           }
           id="size"
-          className="w-full rounded-xl bg-red-50 p-3"
         >
           <option value={""}>Select...</option>
           <option value={"SMALL"}>Small</option>
           <option value={"MEDIUM"}>Medium</option>
           <option value={"BIG"}>Big</option>
-        </select>
+        </Select>
       </div>
       <div className="flex w-full max-w-96 flex-col items-center gap-1">
         <label htmlFor="independency" className="self-start">
           Independency
         </label>
-        <select
+        <Select
+          className="bg-red-50"
           value={petFilters.independency ?? ""}
           onChange={(e) =>
             setPetFilters((filters) => ({
@@ -96,20 +98,20 @@ export const PetFilterInputs = () => {
             }))
           }
           id="independency"
-          className="w-full rounded-xl bg-red-50 p-3"
         >
           <option value={""}>Select...</option>
           <option value={"LOW"}>Low</option>
           <option value={"MEDIUM"}>Medium</option>
           <option value={"HIGH"}>High</option>
-        </select>
+        </Select>
       </div>
 
       <div className="flex w-full max-w-96 flex-col items-center gap-1">
         <label htmlFor="space_needed" className="self-start">
           Space Needed
         </label>
-        <select
+        <Select
+          className="bg-red-50"
           value={petFilters.space_needed ?? ""}
           onChange={(e) =>
             setPetFilters((filters) => ({
@@ -121,13 +123,12 @@ export const PetFilterInputs = () => {
             }))
           }
           id="space_needed"
-          className="w-full rounded-xl bg-red-50 p-3"
         >
           <option value={""}>Select...</option>
           <option value={"LOW"}>Low</option>
           <option value={"MEDIUM"}>Medium</option>
           <option value={"HIGH"}>High</option>
-        </select>
+        </Select>
       </div>
     </div>
   );

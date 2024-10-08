@@ -9,6 +9,7 @@ import { PetFilterInputs } from "@/components/petFilterInputs";
 import { logout } from "@/utils/logout";
 import { useFetchOrganization } from "@/services/organizations/useFetchOrganization";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { Select } from "@/components/ui/select";
 
 export const Pets = () => {
   const { states } = useFetchStates();
@@ -106,8 +107,8 @@ export const Pets = () => {
           <h1>Search for pets</h1>
 
           <div className="flex items-center gap-1.5">
-            <select
-              className="flex items-center rounded-xl border bg-red-100 p-3"
+            <Select
+              className="border bg-red-100"
               onChange={handleSelectState}
               value={selectedState?.state}
             >
@@ -117,10 +118,10 @@ export const Pets = () => {
                   {state}
                 </option>
               ))}
-            </select>
+            </Select>
 
-            <select
-              className="flex items-center gap-0.5 rounded-xl bg-red-200 px-12 py-3"
+            <Select
+              className="w-min bg-red-200 px-12"
               onChange={handleSelectCity}
               value={selectedCity}
             >
@@ -130,7 +131,7 @@ export const Pets = () => {
                   {it}
                 </option>
               ))}
-            </select>
+            </Select>
             <button className="ml-2 rounded-xl bg-yellow p-3 text-blue-200">
               <SearchIcon size={20} />
             </button>

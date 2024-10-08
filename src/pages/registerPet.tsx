@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { toast } from "sonner";
 import axios from "axios";
+import { Select } from "@/components/ui/select";
 
 type RegisterPetFormValues = {
   name: string;
@@ -125,7 +126,7 @@ export const RegisterPet = () => {
           <input
             id="name"
             type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full border border-input-200 bg-input-100"
             {...register("name", { required: "Name required" })}
           />
         </div>
@@ -136,7 +137,7 @@ export const RegisterPet = () => {
           </label>
           <textarea
             id="description"
-            className="w-full resize-none rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full resize-none border border-input-200 bg-input-100"
             {...register("description")}
           />
         </div>
@@ -145,72 +146,72 @@ export const RegisterPet = () => {
           <label htmlFor="age" className="self-start">
             Age
           </label>
-          <select
+          <Select
             id="age"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="border border-input-200 bg-input-100"
             {...register("age")}
           >
             <option value={"PUPPY"}>Puppy</option>
             <option value={"ADULT"}>Adult</option>
             <option value={"SENIOR"}>Senior</option>
-          </select>
+          </Select>
         </div>
         <div className="flex w-full flex-col items-center gap-1">
           <label htmlFor="energy" className="self-start">
             Energy Level
           </label>
-          <select
+          <Select
             id="energy"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="border border-input-200 bg-input-100"
             {...register("energy")}
           >
             <option value={"LOW"}>Low</option>
             <option value={"MEDIUM"}>Medium</option>
             <option value={"HIGH"}>High</option>
-          </select>
+          </Select>
         </div>
         <div className="flex w-full flex-col items-center gap-1">
           <label htmlFor="size" className="self-start">
             Size
           </label>
-          <select
+          <Select
             id="size"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="border border-input-200 bg-input-100"
             {...register("size")}
           >
             <option value={"SMALL"}>Small</option>
             <option value={"MEDIUM"}>Medium</option>
             <option value={"BIG"}>Big</option>
-          </select>
+          </Select>
         </div>
         <div className="flex w-full flex-col items-center gap-1">
           <label htmlFor="independency" className="self-start">
             Independency
           </label>
-          <select
+          <Select
             id="independency"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="border border-input-200 bg-input-100"
             {...register("independency")}
           >
             {" "}
             <option value={"LOW"}>Low</option>
             <option value={"MEDIUM"}>Medium</option>
             <option value={"HIGH"}>High</option>
-          </select>
+          </Select>
         </div>
         <div className="flex w-full flex-col items-center gap-1">
           <label htmlFor="space_needed" className="self-start">
             Space Needed
           </label>
-          <select
+          <Select
             id="space_needed"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="border border-input-200 bg-input-100"
             {...register("space_needed")}
           >
             <option value={"LOW"}>Low</option>
             <option value={"MEDIUM"}>Medium</option>
             <option value={"HIGH"}>High</option>
-          </select>
+          </Select>
         </div>
 
         <div className="flex flex-col items-center">
@@ -231,7 +232,7 @@ export const RegisterPet = () => {
           <input
             id="requirements"
             type="text"
-            className="w-full rounded-lg border border-input-200 bg-input-100 p-2"
+            className="w-full border border-input-200 bg-input-100"
             {...register("requirements")}
           />
         </div>
