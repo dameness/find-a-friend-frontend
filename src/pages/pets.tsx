@@ -47,6 +47,8 @@ export const Pets = () => {
   };
 
   useEffect(() => {
+    if (selectedCity) return;
+
     if (organization) {
       setSelectedState(states.find((it) => it.state === organization.state));
       setSelectedCity(organization.city);
@@ -108,7 +110,7 @@ export const Pets = () => {
 
           <div className="flex items-center gap-1.5">
             <Select
-              className="border bg-red-100"
+              className="min-w-max border bg-red-100"
               onChange={handleSelectState}
               value={selectedState?.state}
             >

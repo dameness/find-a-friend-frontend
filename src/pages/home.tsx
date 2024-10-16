@@ -73,7 +73,7 @@ export const Home = () => {
 
           <div className="flex items-center gap-1.5">
             <Select
-              className="border bg-red-100"
+              className="min-w-max border bg-red-100"
               onChange={handleSelectState}
               value={selectedState?.state}
             >
