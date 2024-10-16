@@ -47,7 +47,9 @@ export const Pets = () => {
   };
 
   useEffect(() => {
-    if (selectedCity) return;
+    if (selectedCity) {
+      return;
+    }
 
     if (organization) {
       setSelectedState(states.find((it) => it.state === organization.state));
@@ -55,8 +57,10 @@ export const Pets = () => {
       return;
     }
 
-    setSelectedState(states[0]);
-    setSelectedCity(states[0]?.cities[0]);
+    if (states && states.length > 0) {
+      setSelectedState(states[0]);
+      setSelectedCity(states[0]?.cities[0]);
+    }
   }, [organization, states]);
 
   return (

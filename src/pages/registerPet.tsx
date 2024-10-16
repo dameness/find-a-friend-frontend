@@ -183,9 +183,7 @@ export const RegisterPet = () => {
           <input
             type="file"
             accept="image/png,image/jpeg,image/jpg"
-            {...register("image", {
-              onChange: (e) => console.log(e.target.files),
-            })}
+            {...register("image")}
           />
         </div>
 

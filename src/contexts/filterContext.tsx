@@ -31,7 +31,7 @@ export function FilterContextProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     if (states[0] && states[0].cities[0]) {
       setSelectedState(states[0]);
-      setSelectedCity(states[0].cities[0]);
+      handleSetSelectedCity(states[0].cities[0]);
     }
   }, [states]);
 

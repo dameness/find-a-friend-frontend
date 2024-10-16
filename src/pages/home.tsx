@@ -7,12 +7,12 @@ import { ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
-  const { states } = useFetchStates();
-
   const { isUserAuthenticated } = useAuthContext();
 
   const { selectedState, setSelectedState, selectedCity, setSelectedCity } =
     useFilterContext();
+
+  const { states } = useFetchStates();
 
   const navigate = useNavigate();
 
@@ -99,7 +99,9 @@ export const Home = () => {
             </Select>
             <button
               className="ml-2 rounded-xl bg-yellow p-3 text-blue-200"
-              onClick={() => navigate("/pets")}
+              onClick={() => {
+                navigate("/pets");
+              }}
             >
               <SearchIcon size={20} />
             </button>
