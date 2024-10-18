@@ -1,6 +1,6 @@
 import { ListFilterIcon, SearchIcon } from "lucide-react";
 import { PetCard } from "../components/petCard";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useFetchPets } from "@/services/pets/useFetchPets";
 import { useNavigate, Link } from "react-router-dom";
 import { useFilterContext } from "@/hooks/useFilterContext";
@@ -26,25 +26,15 @@ export const Pets = () => {
     petFilters,
     selectedState,
     setSelectedState,
+    handleSelectStateInput,
     selectedCity,
     setSelectedCity,
+    handleSelectCityInput,
   } = useFilterContext();
 
   const [showFilters, setShowFilters] = useState(false);
 
   const { pets, isFetched } = useFetchPets(petFilters);
-
-  const handleSelectState = (e: ChangeEvent<HTMLSelectElement>) => {
-    const state = states.find((it) => it.state === e.target.value);
-
-    setSelectedState(state);
-    setSelectedCity(state?.cities[0]);
-  };
-
-  const handleSelectCity = (e: ChangeEvent<HTMLSelectElement>) => {
-    const city = selectedState?.cities.find((it) => it === e.target.value);
-    setSelectedCity(city);
-  };
 
   useEffect(() => {
     if (selectedCity) {
@@ -115,7 +105,7 @@ export const Pets = () => {
           <div className="flex items-center gap-1.5">
             <Select
               className="min-w-max border bg-red-100"
-              onChange={handleSelectState}
+              onChange={handleSelectStateInput}
               value={selectedState?.state}
             >
               <option disabled />
@@ -128,7 +118,7 @@ export const Pets = () => {
 
             <Select
               className="w-min bg-red-200 px-12"
-              onChange={handleSelectCity}
+              onChange={handleSelectCityInput}
               value={selectedCity}
             >
               <option disabled />

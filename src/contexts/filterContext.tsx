@@ -1,7 +1,13 @@
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { State } from "@/types/organizations";
 import { PetFilters } from "@/types/pets";
-import { PropsWithChildren, createContext, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useState,
+  ChangeEvent,
+} from "react";
 
 export type FilterContextType = {
   petFilters: PetFilters;
@@ -9,9 +15,11 @@ export type FilterContextType = {
 
   selectedState?: State;
   setSelectedState: React.Dispatch<React.SetStateAction<State | undefined>>;
+  handleSelectStateInput: (e: ChangeEvent<HTMLSelectElement>) => void;
 
   selectedCity?: string;
   setSelectedCity: (city?: string) => void;
+  handleSelectCityInput: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
 export const FilterContext = createContext({} as FilterContextType);
@@ -23,15 +31,26 @@ export function FilterContextProvider({ children }: PropsWithChildren) {
   const [selectedCity, setSelectedCity] = useState<string>();
   const [petFilters, setPetFilters] = useState<PetFilters>({ city: "" });
 
-  const handleSetSelectedCity = (city?: string) => {
+  const setSelectedCityAndFilters = (city?: string) => {
     setSelectedCity(city);
     setPetFilters((filters) => ({ ...filters, city: city ?? "" }));
   };
 
+  const handleSelectStateInput = (e: ChangeEvent<HTMLSelectElement>) => {
+    const state = states.find((it) => it.state === e.target.value);
+
+    setSelectedState(state);
+    setSelectedCityAndFilters(state?.cities[0]);
+  };
+
+  const handleSelectCityInput = (e: ChangeEvent<HTMLSelectElement>) => {
+    const city = selectedState?.cities.find((it) => it === e.target.value);
+    setSelectedCityAndFilters(city);
+  };
+
   useEffect(() => {
-    if (states[0] && states[0].cities[0]) {
+    if (states && states.length > 0) {
       setSelectedState(states[0]);
-      handleSetSelectedCity(states[0].cities[0]);
     }
   }, [states]);
 
@@ -42,8 +61,10 @@ export function FilterContextProvider({ children }: PropsWithChildren) {
         setPetFilters,
         selectedState,
         setSelectedState,
+        handleSelectStateInput,
         selectedCity,
-        setSelectedCity: handleSetSelectedCity,
+        setSelectedCity: setSelectedCityAndFilters,
+        handleSelectCityInput,
       }}
     >
       {children}

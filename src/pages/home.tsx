@@ -3,30 +3,21 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { useFilterContext } from "@/hooks/useFilterContext";
 import { useFetchStates } from "@/services/organizations/useFetchStates";
 import { SearchIcon } from "lucide-react";
-import { ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { isUserAuthenticated } = useAuthContext();
 
-  const { selectedState, setSelectedState, selectedCity, setSelectedCity } =
-    useFilterContext();
+  const {
+    selectedState,
+    handleSelectStateInput,
+    selectedCity,
+    handleSelectCityInput,
+  } = useFilterContext();
 
   const { states } = useFetchStates();
 
   const navigate = useNavigate();
-
-  const handleSelectState = (e: ChangeEvent<HTMLSelectElement>) => {
-    const state = states.find((it) => it.state === e.target.value);
-
-    setSelectedState(state);
-    setSelectedCity(state?.cities[0]);
-  };
-
-  const handleSelectCity = (e: ChangeEvent<HTMLSelectElement>) => {
-    const city = selectedState?.cities.find((it) => it === e.target.value);
-    setSelectedCity(city);
-  };
 
   return (
     <div className="flex h-full w-screen flex-col justify-between gap-y-8 overflow-auto bg-red-100 p-6 text-white">
@@ -74,7 +65,7 @@ export const Home = () => {
           <div className="flex items-center gap-1.5">
             <Select
               className="min-w-max border bg-red-100"
-              onChange={handleSelectState}
+              onChange={handleSelectStateInput}
               value={selectedState?.state}
             >
               <option disabled />
@@ -87,7 +78,7 @@ export const Home = () => {
 
             <Select
               className="w-min bg-red-200 px-12"
-              onChange={handleSelectCity}
+              onChange={handleSelectCityInput}
               value={selectedCity}
             >
               <option disabled />
