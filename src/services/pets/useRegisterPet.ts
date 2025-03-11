@@ -22,7 +22,7 @@ const registerPet = async (
 ) => {
   let submitData: RegisterPetRequest = data;
 
-  if (data.image) {
+  if (data.image && data.image.length > 0) {
     const form = new FormData();
     form.append("image", data.image[0]);
 
